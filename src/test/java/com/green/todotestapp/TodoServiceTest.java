@@ -36,6 +36,19 @@ class TodoServiceTest {
     @Autowired
     private TodoService service;
 
+//    @Test
+//    void insTodo() {
+//        when(mapper.insTodo(any())).thenReturn(3);
+//
+//        TodoInsDto p1 = new TodoInsDto();
+//        p1.setCtnt("test");
+//        p1.setPic("pic");
+//
+//        int r1 = service.insTodo(p1);
+//        assertEquals(3, r1);
+//
+//        verify(mapper).insTodo(any());
+//    }
     @Test
     void insTodo() throws Exception{
         String originalFileNm = "9e83131e-7fa4-4f80-9e0b-b0c1741db58e";
