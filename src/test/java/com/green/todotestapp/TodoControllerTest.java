@@ -1,6 +1,8 @@
 package com.green.todotestapp;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.green.todotestapp.model.TodoInsDto;
 import com.green.todotestapp.model.TodoRes;
 import org.junit.jupiter.api.DisplayName;
@@ -23,6 +25,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@MockMvcConfig
 @WebMvcTest(TodoController.class)
 class TodoControllerTest {
 
@@ -30,7 +33,7 @@ class TodoControllerTest {
     private MockMvc mvc;
 
     @MockBean
-    private TodoService service;
+    private TodoServiceImpl service;
 
     @Test
     @DisplayName("TODO - 등록")
@@ -51,12 +54,14 @@ class TodoControllerTest {
         MockMultipartFile pic = new MockMultipartFile("pic", originalFileNm, "png", fileInputStream);
 
         ObjectMapper om = new ObjectMapper();
+        om.registerModule(new JavaTimeModule());
+        om.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         String resJson = om.writeValueAsString(res);
 
 
         mvc.perform(multipart("/api/todo")
                         .file(pic)
-                        .part(new MockPart("ctnt", "테스트3".getBytes(StandardCharsets.UTF_8)))
+                        .part(new MockPart("ctnt", "awrgwarg".getBytes(StandardCharsets.UTF_8)))
                 )
                 .andExpect(status().isOk())
                 .andExpect(content().string(resJson))

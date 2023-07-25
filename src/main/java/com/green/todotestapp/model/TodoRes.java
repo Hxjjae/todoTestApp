@@ -1,10 +1,14 @@
 package com.green.todotestapp.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Data
+@NoArgsConstructor
+@ToString
 public class TodoRes {
     private Long itodo;
     private String ctnt;
@@ -17,6 +21,5 @@ public class TodoRes {
         this.ctnt = dto.getCtnt();
         this.pic = dto.getPic();
         this.createdAt = LocalDateTime.now();
-
     }
 }

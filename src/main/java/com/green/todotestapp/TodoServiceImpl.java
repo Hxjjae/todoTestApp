@@ -5,22 +5,19 @@ import com.green.todotestapp.model.TodoInsParam;
 import com.green.todotestapp.model.TodoRes;
 import com.green.todotestapp.model.TodoVo;
 import com.green.todotestapp.utils.MyFileUtils;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
 @Service
-public class TodoSerivceImpl implements TodoService{
+public class TodoServiceImpl implements TodoService{
 
-    public TodoSerivceImpl(TodoMapper MAPPER,@Value("${file.dir}") String fileDir) {
+    public TodoServiceImpl(TodoMapper MAPPER, @Value("${file.dir}") String fileDir) {
         this.MAPPER = MAPPER;
         this.FILE_DIR = MyFileUtils.getAbsolutePath(fileDir);
     }

@@ -1,6 +1,7 @@
 package com.green.todotestapp;
 
-import com.green.todotestapp.model.TodoInsDto;
+import com.green.todotestapp.model.TodoInsParam;
+import com.green.todotestapp.model.TodoRes;
 import com.green.todotestapp.model.TodoVo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,8 +9,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +24,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-@Import({TodoSerivceImpl.class})
+@Import({TodoServiceImpl.class})
+@TestPropertySource(properties = {
+        "file.dir=/home/download"
+})
 class TodoServiceTest {
 
     @MockBean
@@ -29,17 +37,25 @@ class TodoServiceTest {
     private TodoService service;
 
     @Test
-    void insTodo() {
-//        when(mapper.insTodo(any())).thenReturn(3);
-//
-//        TodoInsDto p1 = new TodoInsDto();
-//        p1.setCtnt("test");
-//        p1.setPic("pic");
-//
-//        int r1 = service.insTodo(p1);
-//        assertEquals(3, r1);
-//
-//        verify(mapper).insTodo(any());
+    void insTodo() throws Exception{
+        String originalFileNm = "9e83131e-7fa4-4f80-9e0b-b0c1741db58e";
+        String contentType = "png";
+        String filePath = "D:/home/download/todo/14/" + originalFileNm + "." + contentType;
+        FileInputStream fileInputStream = new FileInputStream(filePath);
+        MultipartFile pic = new MockMultipartFile("pic", originalFileNm, "png", fileInputStream);
+
+        TodoInsParam p1 = new TodoInsParam();
+        p1.setCtnt("테스트3");
+        p1.setPic(pic);
+
+        when(mapper.insTodo(any())).thenReturn(1);
+
+        TodoRes r1 = service.insTodo(p1);
+
+        assertEquals(p1.getCtnt(), r1.getCtnt());
+
+        verify(mapper).insTodo(any());
+
     }
 
     @Test
